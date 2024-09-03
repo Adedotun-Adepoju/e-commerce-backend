@@ -6,10 +6,9 @@ import com.e_commerce.backend.libraries.models.Category;
 import com.e_commerce.backend.libraries.utils.ResponseUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +22,12 @@ public class CategoryController {
         Category category = this.categoryService.createCategory(createCategoryDto);
 
         return ResponseUtil.success(category, "Category created successfully");
+    }
+
+    @GetMapping("")
+    public ApiResponseDto<?> fetchCategories() {
+        List<Category> categories = this.categoryService.fetchCategories();
+
+        return ResponseUtil.success(categories, "Categories fetched successfully");
     }
 }

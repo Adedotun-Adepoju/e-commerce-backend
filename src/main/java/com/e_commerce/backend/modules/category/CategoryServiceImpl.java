@@ -8,6 +8,8 @@ import com.e_commerce.backend.libraries.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -19,5 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
         Category newCategory = this.categoryMapper.toCategory(createCategoryDto);
 
         return this.categoryRepository.save(newCategory);
+    }
+
+    @Override
+    public List<Category> fetchCategories() {
+        return this.categoryRepository.findAll();
     }
 }
