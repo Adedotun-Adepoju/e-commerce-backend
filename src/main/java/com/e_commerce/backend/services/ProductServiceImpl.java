@@ -8,6 +8,7 @@ import com.e_commerce.backend.models.Category;
 import com.e_commerce.backend.models.Product;
 import com.e_commerce.backend.repositories.CategoryRepository;
 import com.e_commerce.backend.repositories.ProductRepository;
+import com.e_commerce.backend.utils.ApiRequestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     @Value("${fake_store_base_url}")
-    private String baseUrl;
+    private String fakeStoreUrl;
 
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
@@ -33,23 +34,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public List<Product> loadProducts() {
-        RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
-
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<List> response = restTemplate.exchange(this.baseUrl, HttpMethod.GET, entity, List.class);
-
+        ResponseEntity<List> response = ApiRequestUtil.makeGetRequest(fakeStoreUrl, headers, List.class);
         List<FakeStoreResp> responseBody = response.getBody();
         System.out.println(responseBody);
 
         assert responseBody != null;
 
         List<Product> products = new ArrayList<>(responseBody.size());
-
 
         for (int i = 0; i < responseBody.size(); i++) {
             FakeStoreResp product = mapper.convertValue(responseBody.get(i), FakeStoreResp.class);
@@ -86,5 +80,10 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = this.productMapper.toProducts(createProductDtos);
 
         return this.productRepository.saveAll(products);
+    }
+
+    @Override
+    public List<Product> fetchAllProducts() {
+        return this.productRepository.findAll();
     }
 }

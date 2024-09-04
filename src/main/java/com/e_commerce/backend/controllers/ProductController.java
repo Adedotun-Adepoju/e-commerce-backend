@@ -30,7 +30,15 @@ public class ProductController {
         return ResponseUtil.success(products, "Products have been created");
     }
 
+
     @GetMapping("")
+    public ApiResponseDto<?> fetchAllProducts() {
+        List<Product> products = this.productService.fetchAllProducts();
+
+        return ResponseUtil.success(products, "Products have been fetched");
+    }
+
+    @GetMapping("/dummy")
     public ApiResponseDto<?> loadProductsFromFakeStore() {
         List<Product> products = this.productService.loadProducts();
 
