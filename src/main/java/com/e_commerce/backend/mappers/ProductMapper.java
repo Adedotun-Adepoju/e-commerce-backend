@@ -26,7 +26,7 @@ public class ProductMapper {
         newProduct.setTitle(createProductDto.name());
         newProduct.setCategory(productCategory);
         newProduct.setPrice(createProductDto.price());
-        newProduct.setImage_url(createProductDto.image_url());
+        newProduct.setImageUrl(createProductDto.image_url());
         newProduct.setDescription(createProductDto.description());
 
         return newProduct;

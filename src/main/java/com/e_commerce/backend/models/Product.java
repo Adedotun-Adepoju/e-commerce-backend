@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
@@ -27,19 +31,30 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String image_url;
+    private String imageUrl;
 
-    private double average_rating;
+    private double averageRating;
 
-    private int rating_counts;
+    private int ratingCounts;
 
-    public Product(Category category, String title, double price, String description, String image_url, double average_rating, int rating_counts) {
+    private int externalReference;
+
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(insertable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    public Product(Category category, String title, double price, String description, String imageUrl, double averageRating, int ratingCounts, int externalReference) {
         this.category = category;
         this.title = title;
         this.price = price;
         this.description = description;
-        this.image_url = image_url;
-        this.average_rating = average_rating;
-        this.rating_counts = rating_counts;
+        this.imageUrl = imageUrl;
+        this.averageRating = averageRating;
+        this.ratingCounts = ratingCounts;
+        this.externalReference = externalReference;
     }
 }

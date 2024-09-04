@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +49,16 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = new ArrayList<>(responseBody.size());
 
         for (int i = 0; i < responseBody.size(); i++) {
+            // check if the product already exists in the db
             FakeStoreResp product = mapper.convertValue(responseBody.get(i), FakeStoreResp.class);
+
+            Optional<Product> existingProduct = this.productRepository.findProductByExternalReference(product.getId());
+
+            // Skip product if it exists in the DB
+            if (existingProduct.isPresent()) {
+                continue;
+            }
+
             Category productCategory = this.categoryRepository.findCategoryByName(product.getCategory())
                     .orElseThrow();
 
@@ -61,7 +71,8 @@ public class ProductServiceImpl implements ProductService {
                     product.getDescription(),
                     product.getImage(),
                     rating.getRate(),
-                    rating.getCount()
+                    rating.getCount(),
+                    product.getId()
             );
 
             products.add(this.productRepository.save(newProduct));
