@@ -1,10 +1,9 @@
-package com.e_commerce.backend.modules.category;
+package com.e_commerce.backend.services;
 
-import com.e_commerce.backend.libraries.dtos.product.CreateCategoryDto;
-import com.e_commerce.backend.libraries.mappers.Product.CategoryMapper;
-import com.e_commerce.backend.libraries.mappers.Product.ProductMapper;
-import com.e_commerce.backend.libraries.models.Category;
-import com.e_commerce.backend.libraries.repositories.CategoryRepository;
+import com.e_commerce.backend.dtos.requests.CreateCategoryDto;
+import com.e_commerce.backend.mappers.CategoryMapper;
+import com.e_commerce.backend.models.Category;
+import com.e_commerce.backend.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

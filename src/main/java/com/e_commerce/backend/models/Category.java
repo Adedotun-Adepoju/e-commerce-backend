@@ -1,4 +1,4 @@
-package com.e_commerce.backend.libraries.models;
+package com.e_commerce.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
