@@ -17,14 +17,14 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("")
-    public ApiResponseDto<?> createProduct(@RequestBody CreateProductDto createProductDto) {
+    public ApiResponseDto<Product> createProduct(@RequestBody CreateProductDto createProductDto) {
         Product product = this.productService.createProduct(createProductDto);
 
         return ResponseUtil.success(product, "Product has been created");
     }
 
     @PostMapping("/create-multiple")
-    public ApiResponseDto<?> createMultipleProducts(@RequestBody List<CreateProductDto> createProductDtos) {
+    public ApiResponseDto<List<Product>> createMultipleProducts(@RequestBody List<CreateProductDto> createProductDtos) {
         List<Product> products = this.productService.createMultipleProducts(createProductDtos);
 
         return ResponseUtil.success(products, "Products have been created");
@@ -32,14 +32,14 @@ public class ProductController {
 
 
     @GetMapping("")
-    public ApiResponseDto<?> fetchAllProducts() {
+    public ApiResponseDto<List<Product>> fetchAllProducts() {
         List<Product> products = this.productService.fetchAllProducts();
 
         return ResponseUtil.success(products, "Products have been fetched");
     }
 
     @GetMapping("/dummy")
-    public ApiResponseDto<?> loadProductsFromFakeStore() {
+    public ApiResponseDto<List<Product>> loadProductsFromFakeStore() {
         List<Product> products = this.productService.loadProducts();
 
         return ResponseUtil.success(products, "Products have been fetched");

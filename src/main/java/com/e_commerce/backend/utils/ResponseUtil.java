@@ -7,7 +7,7 @@ public class ResponseUtil {
         return new ApiResponseDto<>(true, data, message, null);
     }
 
-    public static ApiResponseDto<?> error(String message, int errorCode) {
+    public static ApiResponseDto<Object> error(String message, int errorCode) {
         return new ApiResponseDto<>(false, null, message, errorCode);
     }
 }

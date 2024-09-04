@@ -12,16 +12,17 @@ import com.e_commerce.backend.utils.ApiRequestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
     @Value("${fake_store_base_url}")
     private String fakeStoreUrl;
@@ -38,10 +39,11 @@ public class ProductServiceImpl implements ProductService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<List> response = ApiRequestUtil.makeGetRequest(fakeStoreUrl, headers, List.class);
-        List<FakeStoreResp> responseBody = response.getBody();
-        System.out.println(responseBody);
 
+        List<FakeStoreResp> responseBody = response.getBody();
         assert responseBody != null;
+
+        log.info(responseBody.toString());
 
         List<Product> products = new ArrayList<>(responseBody.size());
 
