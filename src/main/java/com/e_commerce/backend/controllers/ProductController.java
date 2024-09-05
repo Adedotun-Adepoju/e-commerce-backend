@@ -38,7 +38,7 @@ public class ProductController {
         return ResponseUtil.success(products, "Products have been fetched");
     }
 
-    @GetMapping("/dummy")
+    @GetMapping("/load-products")
     public ApiResponseDto<List<Product>> loadProductsFromFakeStore() {
         List<Product> products = this.productService.loadProducts();
 
