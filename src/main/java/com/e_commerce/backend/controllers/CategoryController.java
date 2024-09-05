@@ -1,9 +1,10 @@
-package com.e_commerce.backend.modules.category;
+package com.e_commerce.backend.controllers;
 
-import com.e_commerce.backend.libraries.dtos.ApiResponseDto;
-import com.e_commerce.backend.libraries.dtos.product.CreateCategoryDto;
-import com.e_commerce.backend.libraries.models.Category;
-import com.e_commerce.backend.libraries.utils.ResponseUtil;
+import com.e_commerce.backend.dtos.responses.ApiResponseDto;
+import com.e_commerce.backend.dtos.requests.CreateCategoryDto;
+import com.e_commerce.backend.models.Category;
+import com.e_commerce.backend.services.CategoryService;
+import com.e_commerce.backend.utils.ResponseUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
-package com.e_commerce.backend.libraries.mappers.Product;
+package com.e_commerce.backend.mappers;
 
-import com.e_commerce.backend.libraries.dtos.product.CreateCategoryDto;
-import com.e_commerce.backend.libraries.models.Category;
+import com.e_commerce.backend.dtos.requests.CreateCategoryDto;
+import com.e_commerce.backend.models.Category;
 import org.springframework.stereotype.Component;
 
 @Component

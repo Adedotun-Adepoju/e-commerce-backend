@@ -1,4 +1,4 @@
-package com.e_commerce.backend.libraries.dtos;
+package com.e_commerce.backend.dtos.responses;
 
 public record ApiResponseDto<T>(
         boolean success,
