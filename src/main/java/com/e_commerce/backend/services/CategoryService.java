@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface CategoryService {
     Category createCategory(CreateCategoryDto createCategoryDto);
+    List<Category> createMultipleCategories(List<CreateCategoryDto> createCategoryDtos);
     List<Category> fetchCategories();
 }

@@ -3,6 +3,7 @@ package com.e_commerce.backend.controllers;
 import com.e_commerce.backend.dtos.responses.ApiResponseDto;
 import com.e_commerce.backend.dtos.requests.CreateCategoryDto;
 import com.e_commerce.backend.models.Category;
+import com.e_commerce.backend.models.Product;
 import com.e_commerce.backend.services.CategoryService;
 import com.e_commerce.backend.utils.ResponseUtil;
 import lombok.Data;
@@ -23,6 +24,13 @@ public class CategoryController {
         Category category = this.categoryService.createCategory(createCategoryDto);
 
         return ResponseUtil.success(category, "Category created successfully");
+    }
+
+    @PostMapping("create-multiple")
+    public ApiResponseDto<List<Category>> createMultipleCategories(@RequestBody List<CreateCategoryDto> createCategoryDtos) {
+        List<Category> categories = this.categoryService.createMultipleCategories(createCategoryDtos);
+
+        return ResponseUtil.success(categories, "Categories have been created");
     }
 
     @GetMapping("")

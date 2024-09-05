@@ -35,10 +35,8 @@ public class ProductMapper {
     public List<Product> toProducts(List<CreateProductDto> createProductDtos) {
         ArrayList<Product> products = new ArrayList<>(createProductDtos.size());
 
-        System.out.println(createProductDtos.size());
-
-        for (int i = 0; i < createProductDtos.size(); i++) {
-            products.add(this.toProduct(createProductDtos.get(i)));
+        for (CreateProductDto createProductDto : createProductDtos) {
+            products.add(this.toProduct(createProductDto));
         }
 
         return products;
