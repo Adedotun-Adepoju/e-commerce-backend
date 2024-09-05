@@ -13,6 +13,7 @@ import com.e_commerce.backend.repositories.CartRepository;
 import com.e_commerce.backend.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
@@ -55,7 +57,11 @@ public class CartServiceImpl implements CartService {
         newCartItem.setProduct(product);
         newCartItem.setQuantity(addProductToCartDto.quantity());
 
-        return this.cartItemRepository.save(newCartItem);
+        CartItem savedCartItem = this.cartItemRepository.save(newCartItem);
+
+        this.updateCartItemNo(cartId);
+
+        return savedCartItem;
     }
 
     @Override
@@ -85,6 +91,8 @@ public class CartServiceImpl implements CartService {
             updatedCartItems.add(this.cartItemRepository.save(cartItem));
         }
 
+        this.updateCartItemNo(cartId);
+
         return updatedCartItems.stream()
                 .map(this.cartMapper::toCartItemResponseDto)
                 .toList();
@@ -93,5 +101,15 @@ public class CartServiceImpl implements CartService {
     @Override
     public void removeProductFromCart(String cartItemId) {
         this.cartItemRepository.deleteById(cartItemId);
+    }
+
+    public void updateCartItemNo(String cartId) {
+         int totalCartItems = this.cartItemRepository.sumTotalItems(cartId);
+
+         Cart cart = this.cartRepository.findById(cartId).orElseThrow();
+
+         cart.setItemsNumber(totalCartItems);
+
+         this.cartRepository.save(cart);
     }
 }
