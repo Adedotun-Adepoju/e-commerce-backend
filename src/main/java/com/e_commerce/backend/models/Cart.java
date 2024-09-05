@@ -1,13 +1,14 @@
 package com.e_commerce.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "carts")
@@ -18,10 +19,14 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    // to-do: change to FK once User model is available
+    @OneToMany(mappedBy = "cart")
+    @JsonManagedReference
+    private List<CartItem> cartItems;
+
+    // to-do: change to FK once User model is available. Relationship should be one-to-one with User model
     private String userId;
 
-    private Integer itemsNumber;
+    private int itemsNumber;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

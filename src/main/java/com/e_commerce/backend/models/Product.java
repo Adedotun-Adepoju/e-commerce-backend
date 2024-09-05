@@ -1,6 +1,7 @@
 package com.e_commerce.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -23,6 +25,10 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonBackReference
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference
+    private List<CartItem> cartItems;
 
     private String title;
 
