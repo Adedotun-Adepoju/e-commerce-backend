@@ -1,6 +1,7 @@
 package com.e_commerce.backend.services;
 
 import com.e_commerce.backend.dtos.requests.CreateProductDto;
+import com.e_commerce.backend.dtos.responses.ProductResponseDto;
 import com.e_commerce.backend.dtos.responses.fakeStore.FakeStoreRating;
 import com.e_commerce.backend.dtos.responses.fakeStore.FakeStoreResp;
 import com.e_commerce.backend.mappers.ProductMapper;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -96,7 +98,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> fetchAllProducts() {
-        return this.productRepository.findAll();
+    public List<ProductResponseDto> fetchAllProducts() {
+        List<Product> products =  this.productRepository.findAll();
+
+        return products.stream()
+                .map(this.productMapper::toProductResponseDto)
+                .collect(Collectors.toList());
     }
 }

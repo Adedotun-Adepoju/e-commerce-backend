@@ -1,6 +1,7 @@
 package com.e_commerce.backend.mappers;
 
 import com.e_commerce.backend.dtos.requests.CreateProductDto;
+import com.e_commerce.backend.dtos.responses.ProductResponseDto;
 import com.e_commerce.backend.models.Category;
 import com.e_commerce.backend.models.Product;
 import com.e_commerce.backend.repositories.CategoryRepository;
@@ -35,12 +36,23 @@ public class ProductMapper {
     public List<Product> toProducts(List<CreateProductDto> createProductDtos) {
         ArrayList<Product> products = new ArrayList<>(createProductDtos.size());
 
-        System.out.println(createProductDtos.size());
-
-        for (int i = 0; i < createProductDtos.size(); i++) {
-            products.add(this.toProduct(createProductDtos.get(i)));
+        for (CreateProductDto createProductDto : createProductDtos) {
+            products.add(this.toProduct(createProductDto));
         }
 
         return products;
+    }
+
+    public ProductResponseDto toProductResponseDto(Product product) {
+        return new ProductResponseDto(
+                product.getId(),
+                product.getTitle(),
+                product.getPrice(),
+                product.getDescription(),
+                product.getImageUrl(),
+                product.getCategory().getId(),
+                product.getAverageRating(),
+                product.getRatingCounts()
+        );
     }
 }
