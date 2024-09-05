@@ -6,6 +6,7 @@ import com.e_commerce.backend.models.Product;
 import com.e_commerce.backend.services.ProductService;
 import com.e_commerce.backend.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +33,11 @@ public class ProductController {
 
 
     @GetMapping("")
-    public ApiResponseDto<List<Product>> fetchAllProducts() {
-        List<Product> products = this.productService.fetchAllProducts();
+    public ApiResponseDto<List<Product>> fetchAllProducts(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "limit", defaultValue = "20") Integer limit
+    ) {
+        List<Product> products = this.productService.fetchAllProducts(page, limit);
 
         return ResponseUtil.success(products, "Products have been fetched");
     }

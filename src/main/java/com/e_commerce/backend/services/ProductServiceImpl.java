@@ -14,6 +14,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
@@ -96,7 +99,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> fetchAllProducts() {
-        return this.productRepository.findAll();
+    public List<Product> fetchAllProducts(int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+
+        Page<Product> pageProducts = this.productRepository.findAll(pageable);
+
+        return pageProducts.getContent();
     }
 }
