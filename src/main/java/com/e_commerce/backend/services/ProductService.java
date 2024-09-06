@@ -9,6 +9,7 @@ import java.util.List;
 public interface ProductService {
     List<Product> loadProducts();
     Product createProduct(CreateProductDto createProductDto);
+    ProductResponseDto fetchProductById(String id);
     List<Product> createMultipleProducts(List<CreateProductDto> createProductDtos);
     List<ProductResponseDto> fetchAllProducts();
 }

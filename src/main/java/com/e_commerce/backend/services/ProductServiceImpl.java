@@ -91,6 +91,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseDto fetchProductById(String id) {
+        Product product = this.productRepository.findById(id).orElseThrow();
+
+        return this.productMapper.toProductResponseDto(product);
+    }
+
+    @Override
     public List<Product> createMultipleProducts(List<CreateProductDto> createProductDtos) {
         List<Product> products = this.productMapper.toProducts(createProductDtos);
 

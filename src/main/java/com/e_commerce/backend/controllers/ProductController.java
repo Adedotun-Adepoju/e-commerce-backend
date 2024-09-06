@@ -14,6 +14,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product")
+@CrossOrigin(
+        origins = "*",
+        methods = {
+                RequestMethod.POST,
+                RequestMethod.GET
+        }
+)
 public class ProductController {
     private final ProductService productService;
 
@@ -44,5 +51,12 @@ public class ProductController {
         List<Product> products = this.productService.loadProducts();
 
         return ResponseUtil.success(products, "Products have been fetched");
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponseDto<ProductResponseDto> fetchProductById(@PathVariable("id") String id) {
+        ProductResponseDto product = this.productService.fetchProductById(id);
+
+        return ResponseUtil.success(product, "Product has been fetched");
     }
 }
