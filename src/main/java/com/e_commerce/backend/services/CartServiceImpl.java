@@ -3,6 +3,7 @@ package com.e_commerce.backend.services;
 import com.e_commerce.backend.dtos.requests.AddProductToCartDto;
 import com.e_commerce.backend.dtos.requests.CreateCartDto;
 import com.e_commerce.backend.dtos.requests.UpdateCartProductDto;
+import com.e_commerce.backend.dtos.responses.CartDetailsResponseDto;
 import com.e_commerce.backend.dtos.responses.CartItemResponseDto;
 import com.e_commerce.backend.mappers.CartMapper;
 import com.e_commerce.backend.models.Cart;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +41,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart fetchCartDetailsById(String cartId) {
-        return this.cartRepository.findById(cartId).orElseThrow();
+    public CartDetailsResponseDto fetchCartDetailsById(String cartId) {
+
+        Cart cart = this.cartRepository.findById(cartId).orElseThrow();
+
+        return this.cartMapper.toCartDetailsResponseDto(cart);
     }
 
     @Override
@@ -50,6 +55,17 @@ public class CartServiceImpl implements CartService {
 
         Product product = this.productRepository.findById(addProductToCartDto.product_id())
                 .orElseThrow();
+
+        // check if product already exists in cart
+        Optional<CartItem> cartProduct = this.cartItemRepository.findCartItemByCartIdAndProductId(cartId, product.getId());
+
+        if (cartProduct.isPresent()) {
+            CartItem item = cartProduct.get();
+            item.setQuantity(item.getQuantity() + addProductToCartDto.quantity());
+
+            this.updateCartItemNo(cartId);
+            return this.cartItemRepository.save(item);
+        }
 
         CartItem newCartItem = new CartItem();
 
