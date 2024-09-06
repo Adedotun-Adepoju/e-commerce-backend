@@ -87,7 +87,7 @@ public class CartController {
             @PathVariable("cart_id") String cartId,
             @PathVariable("cart_item_id") String cardItemId
     ) {
-        this.cartService.removeProductFromCart(cardItemId);
+        this.cartService.removeProductFromCart(cartId, cardItemId);
 
         return ResponseUtil.success(null, "Product has been removed from cart");
     }

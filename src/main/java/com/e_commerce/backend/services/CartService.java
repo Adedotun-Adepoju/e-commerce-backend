@@ -16,6 +16,6 @@ public interface CartService {
     CartItem addProductToCart(String cartId, AddProductToCartDto addProductToCartDto);
     List<CartItemResponseDto> fetchProductsInCart(String cartId);
     List<CartItemResponseDto> updateProductsInCart(String cartId, List<UpdateCartProductDto> updateCartProductDto);
-    void removeProductFromCart(String cartItemId);
+    void removeProductFromCart(String cartId, String cartItemId);
 //    void updateCartItemNo(String cartId);
 }

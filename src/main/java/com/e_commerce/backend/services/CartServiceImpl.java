@@ -115,8 +115,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeProductFromCart(String cartItemId) {
+    public void removeProductFromCart(String cartId, String cartItemId) {
         this.cartItemRepository.deleteById(cartItemId);
+
+        this.updateCartItemNo(cartId);
     }
 
     public void updateCartItemNo(String cartId) {
