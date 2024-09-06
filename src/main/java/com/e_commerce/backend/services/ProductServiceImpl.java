@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
@@ -99,8 +100,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> fetchAllProducts(int page, int limit) {
-        Pageable pageable = PageRequest.of(page, limit);
+    public List<Product> fetchAllProducts(int page, int limit, String sortDirection) {
+        Sort.Direction direction = sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        Sort sort = Sort.by(direction, "createdAt");
+
+        Pageable pageable = PageRequest.of(page, limit, sort);
 
         Page<Product> pageProducts = this.productRepository.findAll(pageable);
 

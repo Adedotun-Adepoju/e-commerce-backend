@@ -11,5 +11,5 @@ public interface ProductService {
     List<Product> loadProducts();
     Product createProduct(CreateProductDto createProductDto);
     List<Product> createMultipleProducts(List<CreateProductDto> createProductDtos);
-    List<Product> fetchAllProducts(int page, int limit);
+    List<Product> fetchAllProducts(int page, int limit, String sortDirection);
 }

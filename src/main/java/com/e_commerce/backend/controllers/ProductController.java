@@ -35,9 +35,10 @@ public class ProductController {
     @GetMapping("")
     public ApiResponseDto<List<Product>> fetchAllProducts(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "limit", defaultValue = "20") Integer limit
+            @RequestParam(name = "limit", defaultValue = "20") Integer limit,
+            @RequestParam(name = "sort_direction", defaultValue="") String sortDirection
     ) {
-        List<Product> products = this.productService.fetchAllProducts(page, limit);
+        List<Product> products = this.productService.fetchAllProducts(page, limit, sortDirection.toLowerCase());
 
         return ResponseUtil.success(products, "Products have been fetched");
     }
