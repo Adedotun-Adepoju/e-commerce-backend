@@ -69,15 +69,15 @@ public class ProductServiceImpl implements ProductService {
             // retrieve nested hashmap
             FakeStoreRating rating = product.getRating();
 
-            Product newProduct = new Product(productCategory,
-                    product.getTitle(),
-                    product.getPrice(),
-                    product.getDescription(),
-                    product.getImage(),
-                    rating.getRate(),
-                    rating.getCount(),
-                    product.getId()
-            );
+            Product newProduct = new Product();
+            newProduct.setCategory(productCategory);
+            newProduct.setTitle(product.getTitle());
+            newProduct.setPrice(product.getPrice());
+            newProduct.setDescription(product.getDescription());
+            newProduct.setImageUrl(product.getImage());
+            newProduct.setAverageRating(rating.getRate());
+            newProduct.setRatingCounts(rating.getCount());
+            newProduct.setExternalReference(product.getId());
 
             products.add(this.productRepository.save(newProduct));
         }
