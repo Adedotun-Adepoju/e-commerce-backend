@@ -19,14 +19,21 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("")
-    public ApiResponseDto<?> createProductCategory(@RequestBody CreateCategoryDto createCategoryDto){
+    public ApiResponseDto<Category> createProductCategory(@RequestBody CreateCategoryDto createCategoryDto){
         Category category = this.categoryService.createCategory(createCategoryDto);
 
         return ResponseUtil.success(category, "Category created successfully");
     }
 
+    @PostMapping("create-multiple")
+    public ApiResponseDto<List<Category>> createMultipleCategories(@RequestBody List<CreateCategoryDto> createCategoryDtos) {
+        List<Category> categories = this.categoryService.createMultipleCategories(createCategoryDtos);
+
+        return ResponseUtil.success(categories, "Categories have been created");
+    }
+
     @GetMapping("")
-    public ApiResponseDto<?> fetchCategories() {
+    public ApiResponseDto<List<Category>> fetchCategories() {
         List<Category> categories = this.categoryService.fetchCategories();
 
         return ResponseUtil.success(categories, "Categories fetched successfully");

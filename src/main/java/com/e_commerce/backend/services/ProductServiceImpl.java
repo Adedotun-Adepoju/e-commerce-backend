@@ -15,13 +15,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,15 +70,15 @@ public class ProductServiceImpl implements ProductService {
             // retrieve nested hashmap
             FakeStoreRating rating = product.getRating();
 
-            Product newProduct = new Product(productCategory,
-                    product.getTitle(),
-                    product.getPrice(),
-                    product.getDescription(),
-                    product.getImage(),
-                    rating.getRate(),
-                    rating.getCount(),
-                    product.getId()
-            );
+            Product newProduct = new Product();
+            newProduct.setCategory(productCategory);
+            newProduct.setTitle(product.getTitle());
+            newProduct.setPrice(product.getPrice());
+            newProduct.setDescription(product.getDescription());
+            newProduct.setImageUrl(product.getImage());
+            newProduct.setAverageRating(rating.getRate());
+            newProduct.setRatingCounts(rating.getCount());
+            newProduct.setExternalReference(product.getId());
 
             products.add(this.productRepository.save(newProduct));
         }
@@ -105,11 +108,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> fetchAllProducts() {
-        List<Product> products =  this.productRepository.findAll();
+    public List<Product> fetchAllProducts(int page, int limit, String sortDirection) {
+        Sort.Direction direction = sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-        return products.stream()
-                .map(this.productMapper::toProductResponseDto)
-                .collect(Collectors.toList());
+        Sort sort = Sort.by(direction, "createdAt");
+
+        Pageable pageable = PageRequest.of(page, limit, sort);
+
+        Page<Product> pageProducts = this.productRepository.findAll(pageable);
+
+        return pageProducts.getContent();
     }
 }
