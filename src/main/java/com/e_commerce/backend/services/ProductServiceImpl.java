@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> fetchAllProducts(int page, int limit, String sortDirection) {
+    public List<ProductResponseDto> fetchAllProducts(int page, int limit, String sortDirection) {
         Sort.Direction direction = sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         Sort sort = Sort.by(direction, "createdAt");
@@ -117,6 +117,9 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> pageProducts = this.productRepository.findAll(pageable);
 
-        return pageProducts.getContent();
+        return pageProducts.getContent()
+                .stream()
+                .map(this.productMapper::toProductResponseDto)
+                .toList();
     }
 }

@@ -2,6 +2,7 @@ package com.e_commerce.backend.services;
 
 import com.e_commerce.backend.dtos.requests.AddProductToCartDto;
 import com.e_commerce.backend.dtos.requests.CreateCartDto;
+import com.e_commerce.backend.dtos.requests.UpdateCartItemQuantity;
 import com.e_commerce.backend.dtos.requests.UpdateCartProductDto;
 import com.e_commerce.backend.dtos.responses.CartDetailsResponseDto;
 import com.e_commerce.backend.dtos.responses.CartItemResponseDto;
@@ -17,5 +18,6 @@ public interface CartService {
     List<CartItemResponseDto> fetchProductsInCart(String cartId);
     List<CartItemResponseDto> updateProductsInCart(String cartId, List<UpdateCartProductDto> updateCartProductDto);
     void removeProductFromCart(String cartId, String cartItemId);
+    CartItem updateProductQuantity(String cartItemId, UpdateCartItemQuantity updateCartItemQuantity);
 //    void updateCartItemNo(String cartId);
 }

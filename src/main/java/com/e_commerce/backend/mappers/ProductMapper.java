@@ -55,6 +55,8 @@ public class ProductMapper {
                 product.getPrice(),
                 product.getDescription(),
                 product.getImageUrl(),
+                product.getImageUrl2(),
+                product.getImageUrl3(),
                 product.getCategory().getId(),
                 product.getAverageRating(),
                 product.getRatingCounts()

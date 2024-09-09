@@ -13,5 +13,5 @@ public interface ProductService {
     Product createProduct(CreateProductDto createProductDto);
     ProductResponseDto fetchProductById(String id);
     List<Product> createMultipleProducts(List<CreateProductDto> createProductDtos);
-    List<Product> fetchAllProducts(int page, int limit, String sortDirection);
+    List<ProductResponseDto> fetchAllProducts(int page, int limit, String sortDirection);
 }

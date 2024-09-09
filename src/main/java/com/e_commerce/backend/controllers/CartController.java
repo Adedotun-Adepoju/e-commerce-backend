@@ -2,6 +2,7 @@ package com.e_commerce.backend.controllers;
 
 import com.e_commerce.backend.dtos.requests.AddProductToCartDto;
 import com.e_commerce.backend.dtos.requests.CreateCartDto;
+import com.e_commerce.backend.dtos.requests.UpdateCartItemQuantity;
 import com.e_commerce.backend.dtos.requests.UpdateCartProductDto;
 import com.e_commerce.backend.dtos.responses.ApiResponseDto;
 import com.e_commerce.backend.dtos.responses.CartDetailsResponseDto;
@@ -90,5 +91,16 @@ public class CartController {
         this.cartService.removeProductFromCart(cartId, cardItemId);
 
         return ResponseUtil.success(null, "Product has been removed from cart");
+    }
+
+    @PatchMapping("/products/{cart_item_id}/quantity")
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponseDto<CartItem> updateCartItemQuantity(
+            @PathVariable("cart_item_id") String cartItemId,
+            @RequestBody UpdateCartItemQuantity updateCartItemQuantity
+    ) {
+        CartItem updatedCardItem = this.cartService.updateProductQuantity(cartItemId, updateCartItemQuantity);
+
+        return ResponseUtil.success(updatedCardItem, "Product Quantity has been updated");
     }
 }

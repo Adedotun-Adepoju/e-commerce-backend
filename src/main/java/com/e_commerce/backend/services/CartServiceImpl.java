@@ -2,6 +2,7 @@ package com.e_commerce.backend.services;
 
 import com.e_commerce.backend.dtos.requests.AddProductToCartDto;
 import com.e_commerce.backend.dtos.requests.CreateCartDto;
+import com.e_commerce.backend.dtos.requests.UpdateCartItemQuantity;
 import com.e_commerce.backend.dtos.requests.UpdateCartProductDto;
 import com.e_commerce.backend.dtos.responses.CartDetailsResponseDto;
 import com.e_commerce.backend.dtos.responses.CartItemResponseDto;
@@ -119,6 +120,26 @@ public class CartServiceImpl implements CartService {
         this.cartItemRepository.deleteById(cartItemId);
 
         this.updateCartItemNo(cartId);
+    }
+
+    @Override
+    public CartItem updateProductQuantity(String cartItemId, UpdateCartItemQuantity updateCartItemQuantity) {
+        log.info(cartItemId);
+
+        CartItem cartItem = this.cartItemRepository.findById(cartItemId)
+                .orElseThrow(IllegalArgumentException::new);
+
+        if (updateCartItemQuantity.action().equals("increase")) {
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+        } else if (updateCartItemQuantity.action().equals("decrease")){
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+        }
+
+        CartItem savedCartItem = this.cartItemRepository.save(cartItem);
+
+        this.updateCartItemNo(cartItem.getCart().getId());
+
+        return savedCartItem;
     }
 
     public void updateCartItemNo(String cartId) {
