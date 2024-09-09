@@ -31,7 +31,15 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    private String thumbnail;
+
     private String imageUrl;
+
+    @Column(name = "image_url_2")
+    private String imageUrl2;
+
+    @Column(name = "image_url_3")
+    private String imageUrl3;
 
     private double averageRating;
 
@@ -46,15 +54,4 @@ public class Product {
     @Column(insertable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-
-    public Product(Category category, String title, double price, String description, String imageUrl, double averageRating, int ratingCounts, int externalReference) {
-        this.category = category;
-        this.title = title;
-        this.price = price;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.averageRating = averageRating;
-        this.ratingCounts = ratingCounts;
-        this.externalReference = externalReference;
-    }
 }

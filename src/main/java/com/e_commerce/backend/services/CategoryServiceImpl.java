@@ -23,6 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> createMultipleCategories(List<CreateCategoryDto> createCategoryDtos) {
+        List<Category> categories = this.categoryMapper.toCategories(createCategoryDtos);
+
+        return this.categoryRepository.saveAll(categories);
+    }
+
+    @Override
     public List<Category> fetchCategories() {
         return this.categoryRepository.findAll();
     }

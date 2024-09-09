@@ -23,11 +23,16 @@ public class ProductMapper {
                 .orElseThrow();
         // throw error if category is null
 
-        newProduct.setTitle(createProductDto.name());
+        newProduct.setTitle(createProductDto.title());
         newProduct.setCategory(productCategory);
         newProduct.setPrice(createProductDto.price());
+        newProduct.setThumbnail(createProductDto.thumbnail());
         newProduct.setImageUrl(createProductDto.image_url());
+        newProduct.setImageUrl2(createProductDto.image_url_2());
+        newProduct.setImageUrl3(createProductDto.image_url_3());
         newProduct.setDescription(createProductDto.description());
+        newProduct.setExternalReference(createProductDto.external_reference());
+        newProduct.setAverageRating(createProductDto.average_rating());
 
         return newProduct;
     }
@@ -35,10 +40,8 @@ public class ProductMapper {
     public List<Product> toProducts(List<CreateProductDto> createProductDtos) {
         ArrayList<Product> products = new ArrayList<>(createProductDtos.size());
 
-        System.out.println(createProductDtos.size());
-
-        for (int i = 0; i < createProductDtos.size(); i++) {
-            products.add(this.toProduct(createProductDtos.get(i)));
+        for (CreateProductDto createProductDto : createProductDtos) {
+            products.add(this.toProduct(createProductDto));
         }
 
         return products;
