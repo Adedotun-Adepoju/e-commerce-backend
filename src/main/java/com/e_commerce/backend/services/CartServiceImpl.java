@@ -124,8 +124,6 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartItem updateProductQuantity(String cartItemId, UpdateCartItemQuantity updateCartItemQuantity) {
-        log.info(cartItemId);
-
         CartItem cartItem = this.cartItemRepository.findById(cartItemId)
                 .orElseThrow(IllegalArgumentException::new);
 
