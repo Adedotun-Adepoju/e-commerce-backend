@@ -30,6 +30,10 @@ public class Product {
     @JsonManagedReference
     private List<CartItem> cartItems;
 
+    @OneToMany(mappedBy = "product")
+    @JsonManagedReference
+    private List<WishlistItem> wishlistItems;
+
     private String title;
 
     private Double price;

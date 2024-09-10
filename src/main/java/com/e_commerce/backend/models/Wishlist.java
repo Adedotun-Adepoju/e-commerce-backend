@@ -11,19 +11,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "wishlists")
 @RequiredArgsConstructor
 @Data
-public class Category {
+public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "wishlist")
     @JsonManagedReference
-    private List<Product> products;
+    private List<WishlistItem> wishlistItems;
 
-    private String name;
+    // to-do: change to FK once User model is available. Relationship should be one-to-one with User model
+    private String userId;
+
+    private int itemsNumber;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

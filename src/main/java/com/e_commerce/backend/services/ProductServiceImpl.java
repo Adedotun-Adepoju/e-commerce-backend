@@ -111,9 +111,18 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponseDto> fetchAllProducts(int page, int limit, String sortDirection) {
         Sort.Direction direction = sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-        Sort sort = Sort.by(direction, "createdAt");
+        Pageable pageable;
 
-        Pageable pageable = PageRequest.of(page, limit, sort);
+        if (!sortDirection.isEmpty()) {
+            Sort sort = Sort.by(direction, "averageRating");
+            pageable = PageRequest.of(page, limit, sort);
+        } else {
+            pageable = PageRequest.of(page, limit);
+        }
+
+//        Sort sort = Sort.by(direction, "averageRating");
+//
+//        Pageable pageable = PageRequest.of(page, limit, sort);
 
         Page<Product> pageProducts = this.productRepository.findAll(pageable);
 
