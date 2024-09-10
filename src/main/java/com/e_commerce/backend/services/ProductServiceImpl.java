@@ -1,6 +1,7 @@
 package com.e_commerce.backend.services;
 
 import com.e_commerce.backend.dtos.requests.CreateProductDto;
+import com.e_commerce.backend.dtos.responses.ProductResponseDto;
 import com.e_commerce.backend.dtos.responses.fakeStore.FakeStoreRating;
 import com.e_commerce.backend.dtos.responses.fakeStore.FakeStoreResp;
 import com.e_commerce.backend.mappers.ProductMapper;
@@ -93,6 +94,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseDto fetchProductById(String id) {
+        Product product = this.productRepository.findById(id).orElseThrow();
+
+        return this.productMapper.toProductResponseDto(product);
+    }
+
+    @Override
     public List<Product> createMultipleProducts(List<CreateProductDto> createProductDtos) {
         List<Product> products = this.productMapper.toProducts(createProductDtos);
 
@@ -100,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> fetchAllProducts(int page, int limit, String sortDirection) {
+    public List<ProductResponseDto> fetchAllProducts(int page, int limit, String sortDirection) {
         Sort.Direction direction = sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
         Sort sort = Sort.by(direction, "createdAt");
@@ -109,6 +117,9 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> pageProducts = this.productRepository.findAll(pageable);
 
-        return pageProducts.getContent();
+        return pageProducts.getContent()
+                .stream()
+                .map(this.productMapper::toProductResponseDto)
+                .toList();
     }
 }

@@ -1,6 +1,7 @@
 package com.e_commerce.backend.mappers;
 
 import com.e_commerce.backend.dtos.requests.CreateProductDto;
+import com.e_commerce.backend.dtos.responses.ProductResponseDto;
 import com.e_commerce.backend.models.Category;
 import com.e_commerce.backend.models.Product;
 import com.e_commerce.backend.repositories.CategoryRepository;
@@ -45,5 +46,20 @@ public class ProductMapper {
         }
 
         return products;
+    }
+
+    public ProductResponseDto toProductResponseDto(Product product) {
+        return new ProductResponseDto(
+                product.getId(),
+                product.getTitle(),
+                product.getPrice(),
+                product.getDescription(),
+                product.getImageUrl(),
+                product.getImageUrl2(),
+                product.getImageUrl3(),
+                product.getCategory().getId(),
+                product.getAverageRating(),
+                product.getRatingCounts()
+        );
     }
 }

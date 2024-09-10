@@ -1,6 +1,5 @@
 package com.e_commerce.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -12,46 +11,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "carts")
 @RequiredArgsConstructor
 @Data
-public class Product {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    // category id foreign key
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @JsonBackReference
-    private Category category;
-
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "cart")
     @JsonManagedReference
     private List<CartItem> cartItems;
 
-    private String title;
+    // to-do: change to FK once User model is available. Relationship should be one-to-one with User model
+    private String userId;
 
-    private Double price;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    private String thumbnail;
-
-    private String imageUrl;
-
-    @Column(name = "image_url_2")
-    private String imageUrl2;
-
-    @Column(name = "image_url_3")
-    private String imageUrl3;
-
-    private double averageRating;
-
-    private int ratingCounts;
-
-    private int externalReference;
+    private int itemsNumber;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
