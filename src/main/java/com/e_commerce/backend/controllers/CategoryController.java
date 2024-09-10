@@ -4,6 +4,7 @@ import com.e_commerce.backend.dtos.responses.ApiResponseDto;
 import com.e_commerce.backend.dtos.requests.CreateCategoryDto;
 import com.e_commerce.backend.models.Category;
 import com.e_commerce.backend.services.CategoryService;
+import com.e_commerce.backend.utils.ResponseMessages;
 import com.e_commerce.backend.utils.ResponseUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +23,20 @@ public class CategoryController {
     public ApiResponseDto<Category> createProductCategory(@RequestBody CreateCategoryDto createCategoryDto){
         Category category = this.categoryService.createCategory(createCategoryDto);
 
-        return ResponseUtil.success(category, "Category created successfully");
+        return ResponseUtil.success(category, ResponseMessages.CREATE_CATEGORY);
     }
 
     @PostMapping("create-multiple")
     public ApiResponseDto<List<Category>> createMultipleCategories(@RequestBody List<CreateCategoryDto> createCategoryDtos) {
         List<Category> categories = this.categoryService.createMultipleCategories(createCategoryDtos);
 
-        return ResponseUtil.success(categories, "Categories have been created");
+        return ResponseUtil.success(categories, ResponseMessages.CREATE_MULTIPLE_CATEGORIES);
     }
 
     @GetMapping("")
     public ApiResponseDto<List<Category>> fetchCategories() {
         List<Category> categories = this.categoryService.fetchCategories();
 
-        return ResponseUtil.success(categories, "Categories fetched successfully");
+        return ResponseUtil.success(categories, ResponseMessages.FETCH_CATEGORIES);
     }
 }

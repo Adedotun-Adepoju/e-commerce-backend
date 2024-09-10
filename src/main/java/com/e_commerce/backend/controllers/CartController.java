@@ -9,6 +9,7 @@ import com.e_commerce.backend.dtos.responses.CartItemResponseDto;
 import com.e_commerce.backend.models.Cart;
 import com.e_commerce.backend.models.CartItem;
 import com.e_commerce.backend.services.CartService;
+import com.e_commerce.backend.utils.ResponseMessages;
 import com.e_commerce.backend.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class CartController {
     public ApiResponseDto<Cart> createCart(@RequestBody CreateCartDto createCartDto) {
         Cart cart = this.cartService.createCart(createCartDto);
 
-        return ResponseUtil.success(cart, "Cart created successfully");
+        return ResponseUtil.success(cart, ResponseMessages.CREATE_CART);
     }
 
     @GetMapping("/{cart_id}")
@@ -35,7 +36,7 @@ public class CartController {
     public ApiResponseDto<CartDetailsResponseDto> getCartById(@PathVariable("cart_id") String cartId) {
         CartDetailsResponseDto cartDetailsResponseDto = this.cartService.fetchCartDetailsById(cartId);
 
-        return ResponseUtil.success(cartDetailsResponseDto,"Cart details have been fetched");
+        return ResponseUtil.success(cartDetailsResponseDto,ResponseMessages.GET_CART_DETAILS);
     }
 
     @PostMapping("/{cart_id}/product")
@@ -46,7 +47,7 @@ public class CartController {
         ) {
         CartItem cartItem = this.cartService.addProductToCart(cartId, addProductToCartDto);
 
-        return ResponseUtil.success(cartItem, "Product has been added to cart");
+        return ResponseUtil.success(cartItem, ResponseMessages.ADD_PRODUCT_TO_CART);
     }
 
     @GetMapping("/{cart_id}/products")
@@ -56,7 +57,7 @@ public class CartController {
     ) {
         List<CartItemResponseDto> cartItems = this.cartService.fetchProductsInCart(cartId);
 
-        return ResponseUtil.success(cartItems, "Carts products have been fetched");
+        return ResponseUtil.success(cartItems, ResponseMessages.FETCH_CART_PRODUCTS);
     }
 
     @DeleteMapping("/{cart_id}/cart-item/{cart_item_id}")
@@ -67,7 +68,7 @@ public class CartController {
     ) {
         this.cartService.removeProductFromCart(cartId, cardItemId);
 
-        return ResponseUtil.success(null, "Product has been removed from cart");
+        return ResponseUtil.success(null, ResponseMessages.REMOVE_CART_PRODUCT);
     }
 
     @PatchMapping("/products/{cart_item_id}/quantity")
@@ -78,6 +79,6 @@ public class CartController {
     ) {
         CartItem updatedCardItem = this.cartService.updateProductQuantity(cartItemId, updateCartItemQuantity);
 
-        return ResponseUtil.success(updatedCardItem, "Product Quantity has been updated");
+        return ResponseUtil.success(updatedCardItem, ResponseMessages.UPDATE_CART_ITEM_QUANTITY);
     }
 }
