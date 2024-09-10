@@ -19,5 +19,4 @@ public interface CartService {
     List<CartItemResponseDto> updateProductsInCart(String cartId, List<UpdateCartProductDto> updateCartProductDto);
     void removeProductFromCart(String cartId, String cartItemId);
     CartItem updateProductQuantity(String cartItemId, UpdateCartItemQuantity updateCartItemQuantity);
-//    void updateCartItemNo(String cartId);
 }
