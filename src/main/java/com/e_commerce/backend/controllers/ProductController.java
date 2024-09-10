@@ -15,13 +15,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product")
-@CrossOrigin(
-        origins = "*",
-        methods = {
-                RequestMethod.POST,
-                RequestMethod.GET
-        }
-)
 public class ProductController {
     private final ProductService productService;
 

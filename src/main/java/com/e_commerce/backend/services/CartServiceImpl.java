@@ -3,7 +3,6 @@ package com.e_commerce.backend.services;
 import com.e_commerce.backend.dtos.requests.AddProductToCartDto;
 import com.e_commerce.backend.dtos.requests.CreateCartDto;
 import com.e_commerce.backend.dtos.requests.UpdateCartItemQuantity;
-import com.e_commerce.backend.dtos.requests.UpdateCartProductDto;
 import com.e_commerce.backend.dtos.responses.CartDetailsResponseDto;
 import com.e_commerce.backend.dtos.responses.CartItemResponseDto;
 import com.e_commerce.backend.mappers.CartMapper;
@@ -13,15 +12,12 @@ import com.e_commerce.backend.models.Product;
 import com.e_commerce.backend.repositories.CartItemRepository;
 import com.e_commerce.backend.repositories.CartRepository;
 import com.e_commerce.backend.repositories.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,31 +87,6 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @Transactional
-    public List<CartItemResponseDto> updateProductsInCart(String cartId, List<UpdateCartProductDto> updateCartProductDtos) {
-        List<CartItem> updatedCartItems = new ArrayList<>(updateCartProductDtos.size());
-
-        for (UpdateCartProductDto updateCartProductDto: updateCartProductDtos) {
-            CartItem cartItem = this.cartItemRepository.findById(updateCartProductDto.cart_item_id())
-                    .orElseThrow();
-
-            if (!cartItem.getCart().getId().equals(cartId)) {
-                throw new IllegalArgumentException("Cart does not exist for this product");
-            }
-
-            cartItem.setQuantity(updateCartProductDto.quantity());
-
-            updatedCartItems.add(this.cartItemRepository.save(cartItem));
-        }
-
-        this.updateCartItemNo(cartId);
-
-        return updatedCartItems.stream()
-                .map(this.cartMapper::toCartItemResponseDto)
-                .toList();
-    }
-
-    @Override
     public void removeProductFromCart(String cartId, String cartItemId) {
         this.cartItemRepository.deleteById(cartItemId);
 
@@ -141,7 +112,8 @@ public class CartServiceImpl implements CartService {
     }
 
     public void updateCartItemNo(String cartId) {
-         int totalCartItems = this.cartItemRepository.sumTotalItems(cartId);
+         int totalCartItems = this.cartItemRepository.sumTotalItems(cartId)
+                 .orElse(0);
 
          Cart cart = this.cartRepository.findById(cartId).orElseThrow();
 

@@ -3,7 +3,6 @@ package com.e_commerce.backend.controllers;
 import com.e_commerce.backend.dtos.requests.AddProductToCartDto;
 import com.e_commerce.backend.dtos.requests.CreateCartDto;
 import com.e_commerce.backend.dtos.requests.UpdateCartItemQuantity;
-import com.e_commerce.backend.dtos.requests.UpdateCartProductDto;
 import com.e_commerce.backend.dtos.responses.ApiResponseDto;
 import com.e_commerce.backend.dtos.responses.CartDetailsResponseDto;
 import com.e_commerce.backend.dtos.responses.CartItemResponseDto;
@@ -20,16 +19,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cart")
-@CrossOrigin(
-        origins = "*",
-        methods = {
-                RequestMethod.POST,
-                RequestMethod.GET,
-                RequestMethod.PUT,
-                RequestMethod.OPTIONS,
-                RequestMethod.HEAD
-        }
-)
 public class CartController {
     private final CartService cartService;
 
@@ -68,18 +57,6 @@ public class CartController {
         List<CartItemResponseDto> cartItems = this.cartService.fetchProductsInCart(cartId);
 
         return ResponseUtil.success(cartItems, "Carts products have been fetched");
-    }
-
-    @PutMapping("/{cart_id}/products")
-    @ResponseStatus(HttpStatus.OK)
-    public ApiResponseDto<List<CartItemResponseDto>> updateCartItems(
-            @PathVariable("cart_id") String cartId,
-            @RequestBody List<UpdateCartProductDto> updateCartProductDtos
-        ){
-
-        List<CartItemResponseDto> cartItemResponseDtos = this.cartService.updateProductsInCart(cartId, updateCartProductDtos);
-
-        return ResponseUtil.success(cartItemResponseDtos, "Cart products have been updated");
     }
 
     @DeleteMapping("/{cart_id}/cart-item/{cart_item_id}")
