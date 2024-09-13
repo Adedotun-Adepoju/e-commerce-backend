@@ -6,10 +6,12 @@ import com.e_commerce.backend.exceptions.UserNotFoundException;
 import com.e_commerce.backend.mappers.UserMapper;
 import com.e_commerce.backend.models.User;
 import com.e_commerce.backend.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +19,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final Random random = new Random();
+
 
     // Define a constant for the repeated error message
     private static final String USER_NOT_FOUND_MESSAGE = "User not found with id: ";
@@ -35,9 +39,12 @@ public class UserServiceImpl implements UserService {
         return userMapper.convertToUserResponseDto(user);
     }
 
+    @Transactional
     @Override
     public UserResponseDto createUser(CreateUserDto createUserDto) {
         User user = userMapper.convertToUserEntity(createUserDto);
+        String userId = generateUniqueUserId(createUserDto.getName());
+        user.setUserId(userId);
         User createdUser = userRepository.save(user);
         return userMapper.convertToUserResponseDto(createdUser);
     }
@@ -69,5 +76,18 @@ public class UserServiceImpl implements UserService {
         existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
         existingUser.setCreatedAt(updatedUser.getCreatedAt());
         existingUser.setUpdatedAt(updatedUser.getUpdatedAt());
+    }
+
+    private String generateUniqueUserId(String userName) {
+        String prefix = userName.substring(0, 1).toUpperCase();
+        String userId;
+
+        // Ensure userId is unique
+        do {
+            int randomNumber = random.nextInt(90000) + 10000; // 5-digit random number
+            userId = prefix + "-" + randomNumber;
+        } while (userRepository.existsByUserId(userId));
+
+        return userId;
     }
 }
